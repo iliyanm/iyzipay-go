@@ -26,6 +26,13 @@ func makeRequest(request Request, methodType string, endpoint string, options Op
 	return response
 }
 
+func decodeResponse(response string, into interface{}) interface{} {
+	if err := json.Unmarshal([]byte(response), into); err != nil {
+		panic(err)
+	}
+	return into
+}
+
 func connect(method string, url string, options Options, requestString, pkiString string) string {
 
 	body := bytes.NewBufferString(requestString)
