@@ -30,4 +30,12 @@ type (
 		SubMerchantType       string `json:"subMerchantType"`
 		SubMerchantKey        string `json:"subMerchantKey"`
 	}
+
+	CheckoutFormInitializeResource struct {
+		Resource
+		Token               string `json:"token"`
+		CheckoutFormContent string `json:"checkoutFormContent"`
+		TokenExpireTime     int64  `json:"tokenExpireTime"`
+		PaymentPageUrl      string `json:"paymentPageUrl"`
+	}
 )
