@@ -13,7 +13,7 @@ type PricingPlan struct {
 	Locale               string  `json:"locale,omitempty"`
 	ConversationId       string  `json:"conversationId,omitempty"`
 	ProductReferenceCode string  `json:"productReferenceCode,omitempty"`
-	Name                 string  `json:"Name,omitempty"`
+	Name                 string  `json:"name,omitempty"`
 	Price                float64 `json:"price,omitempty"`
 	CurrencyCode         string  `json:"currencyCode,omitempty"`
 	PaymentInterval      string  `json:"paymentInterval,omitempty"`
