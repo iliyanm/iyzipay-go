@@ -23,8 +23,8 @@ type PricingPlan struct {
 	RecurrenceCount      string  `json:"recurrenceCount,omitempty"`
 }
 
-func (pricingPlan *PricingPlan) Create(options *Options) (*PricingPlanResponse, error) {
-	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/products/"+pricingPlan.ProductReferenceCode+"/pricing-plans", options.apiKey, options.secretKey, pricingPlan)
+func (p *PricingPlan) Create(options *Options) (*PricingPlanResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/products/"+p.ProductReferenceCode+"/pricing-plans", options.apiKey, options.secretKey, p)
 	if err != nil {
 		return nil, err
 	}

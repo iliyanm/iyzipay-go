@@ -1,1 +1,135 @@
 package iyzipay
+
+const (
+	SubscriptionInitialStatusActive  = "ACTIVE"
+	SubscriptionInitialStatusPending = "PENDING"
+)
+
+type Subscription struct {
+	Locale                    string               `json:"locale,omitempty"`
+	ConversationId            string               `json:"conversationId,omitempty"`
+	CallbackUrl               string               `json:"callbackUrl,omitempty"`
+	PricingPlanReferenceCode  string               `json:"pricingPlanReferenceCode,omitempty"`
+	SubscriptionInitialStatus string               `json:"subscriptionInitialStatus,omitempty"` // PENDING or ACTIVE
+	Name                      string               `json:"name,omitempty"`
+	Surname                   string               `json:"surname,omitempty"`
+	IdentityNumber            string               `json:"identityNumber,omitempty"`
+	Email                     string               `json:"email,omitempty"`
+	GSMNumber                 string               `json:"gsmNumber,omitempty"`
+	BillingAddress            *SubscriptionAddress `json:"billingAddress,omitempty"`
+	ShippingAddress           *SubscriptionAddress `json:"shippingAddress,omitempty"`
+}
+
+func (p *Subscription) Create(options *Options) (*SubscriptionResponse, error) {
+	response, err := connectV2("GET", options.baseUrl+"/v2/subscription/checkoutform/initialize", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionResponse{}).(*SubscriptionResponse), nil
+}
+
+type SubscriptionResponse struct {
+	Status              string `json:"status"` // success / failure
+	SystemTime          int64  `json:"systemTime"`
+	CheckoutFormContent string `json:"checkoutFormContent"`
+	Token               string `json:"token"`
+	TokenExpireTime     string `json:"tokenExpireTime"`
+}
+
+type SubscriptionCheckoutFormResult struct {
+	Token string `json:"token,omitempty"`
+}
+
+func (p *SubscriptionCheckoutFormResult) Get(options *Options) (*SubscriptionCheckoutFormResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/checkoutform/", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionCheckoutFormResponse{}).(*SubscriptionCheckoutFormResponse), nil
+}
+
+type SubscriptionCheckoutFormResponse struct {
+	Status     string                                `json:"status"` // success / failure
+	SystemTime int64                                 `json:"systemTime"`
+	Data       *SubscriptionCheckoutFormResponseData `json:"data"`
+}
+
+type SubscriptionCheckoutFormResponseData struct {
+	ReferenceCode         string `json:"referenceCode"`
+	CustomerReferenceCode string `json:"customerReferenceCode"`
+	SubscriptionStatus    string `json:"subscriptionStatus"` // ACTIVE or PENDING
+	TrialDays             int16  `json:"trialDays"`
+	TrialStartDate        int64  `json:"trialStartDate"`
+	TrialEndDate          int64  `json:"trialEndDate"`
+	CreatedDate           int64  `json:"createdDate"`
+	StartDate             int64  `json:"startDate"`
+}
+
+type SubscriptionUpgrade struct {
+	SubscriptionReferenceCode   string `json:"subscriptionReferenceCode,omitempty"`
+	NewPricingPlanReferenceCode string `json:"newPricingPlanReferenceCode,omitempty"`
+	UpgradePeriod               string `json:"upgradePeriod,omitempty"`
+	UseTrial                    bool   `json:"useTrial,omitempty"`
+	ResetRecurrenceCount        bool   `json:"resetRecurrenceCount,omitempty"`
+}
+
+func (p *SubscriptionUpgrade) Upgrade(options *Options) (*SubscriptionUpgradeResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/subscriptions/"+p.SubscriptionReferenceCode+"/upgrade", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionUpgradeResponse{}).(*SubscriptionUpgradeResponse), nil
+}
+
+type SubscriptionUpgradeResponse struct {
+	Status     string `json:"status"` // success / failure
+	SystemTime int64  `json:"systemTime"`
+}
+
+type SubscriptionCancel struct {
+	Locale                    string `json:"locale,omitempty"`
+	ConversationId            string `json:"conversationId,omitempty"`
+	SubscriptionReferenceCode string `json:"subscriptionReferenceCode,omitempty"`
+}
+
+func (p *SubscriptionCancel) Cancel(options *Options) (*SubscriptionCancelResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/subscriptions/"+p.SubscriptionReferenceCode+"/cancel", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionCancelResponse{}).(*SubscriptionCancelResponse), nil
+}
+
+type SubscriptionCancelResponse struct {
+	Status     string `json:"status"` // success / failure
+	SystemTime int64  `json:"systemTime"`
+}
+
+type SubscriptionUpdateCardInformation struct {
+	Locale                    string `json:"locale,omitempty"`
+	ConversationId            string `json:"conversationId,omitempty"`
+	SubscriptionReferenceCode string `json:"subscriptionReferenceCode,omitempty"`
+	CustomerReferenceCode     string `json:"customerReferenceCode,omitempty"`
+	CallBackUrl               string `json:"callBackUrl,omitempty"`
+}
+
+func (p *SubscriptionUpdateCardInformation) UpdateCardInformation(options *Options) (*SubscriptionUpdateCardInformationResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/card-update/checkoutform/initialize", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionUpdateCardInformationResponse{}).(*SubscriptionUpdateCardInformationResponse), nil
+}
+
+type SubscriptionUpdateCardInformationResponse struct {
+	Status              string `json:"status"` // success / failure
+	SystemTime          int64  `json:"systemTime"`
+	CheckoutFormContent int64  `json:"checkoutFormContent"`
+	Token               int64  `json:"token"`
+	TokenExpireTime     int64  `json:"tokenExpireTime"`
+}
