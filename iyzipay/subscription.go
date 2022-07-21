@@ -108,10 +108,19 @@ type SubscriptionUpdateCardInformation struct {
 	ConversationId            string `json:"conversationId,omitempty"`
 	SubscriptionReferenceCode string `json:"subscriptionReferenceCode,omitempty"`
 	CustomerReferenceCode     string `json:"customerReferenceCode,omitempty"`
-	CallBackUrl               string `json:"callBackUrl,omitempty"`
+	CallBackUrl               string `json:"callbackUrl,omitempty"`
 }
 
-func (p *SubscriptionUpdateCardInformation) UpdateCardInformation(options *Options) (*SubscriptionUpdateCardInformationResponse, error) {
+func (p *SubscriptionUpdateCardInformation) UpdateSubscriptionCardInformation(options *Options) (*SubscriptionUpdateCardInformationResponse, error) {
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/card-update/checkoutform/initialize/with-subscription", options.apiKey, options.secretKey, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeResponse(response, &SubscriptionUpdateCardInformationResponse{}).(*SubscriptionUpdateCardInformationResponse), nil
+}
+
+func (p *SubscriptionUpdateCardInformation) UpdateCustomerCardInformation(options *Options) (*SubscriptionUpdateCardInformationResponse, error) {
 	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/card-update/checkoutform/initialize", options.apiKey, options.secretKey, p)
 	if err != nil {
 		return nil, err
