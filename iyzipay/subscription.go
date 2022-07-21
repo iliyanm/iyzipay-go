@@ -6,22 +6,16 @@ const (
 )
 
 type Subscription struct {
-	Locale                    string               `json:"locale,omitempty"`
-	ConversationId            string               `json:"conversationId,omitempty"`
-	CallbackUrl               string               `json:"callbackUrl,omitempty"`
-	PricingPlanReferenceCode  string               `json:"pricingPlanReferenceCode,omitempty"`
-	SubscriptionInitialStatus string               `json:"subscriptionInitialStatus,omitempty"` // PENDING or ACTIVE
-	Name                      string               `json:"name,omitempty"`
-	Surname                   string               `json:"surname,omitempty"`
-	IdentityNumber            string               `json:"identityNumber,omitempty"`
-	Email                     string               `json:"email,omitempty"`
-	GSMNumber                 string               `json:"gsmNumber,omitempty"`
-	BillingAddress            *SubscriptionAddress `json:"billingAddress,omitempty"`
-	ShippingAddress           *SubscriptionAddress `json:"shippingAddress,omitempty"`
+	Locale                    string                `json:"locale,omitempty"`
+	ConversationId            string                `json:"conversationId,omitempty"`
+	CallbackUrl               string                `json:"callbackUrl,omitempty"`
+	PricingPlanReferenceCode  string                `json:"pricingPlanReferenceCode,omitempty"`
+	SubscriptionInitialStatus string                `json:"subscriptionInitialStatus,omitempty"` // PENDING or ACTIVE
+	SubscriptionCustomer      *SubscriptionCustomer `json:"customer,omitempty"`
 }
 
 func (p *Subscription) Create(options *Options) (*SubscriptionResponse, error) {
-	response, err := connectV2("GET", options.baseUrl+"/v2/subscription/checkoutform/initialize", options.apiKey, options.secretKey, p)
+	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/checkoutform/initialize", options.apiKey, options.secretKey, p)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +28,7 @@ type SubscriptionResponse struct {
 	SystemTime          int64  `json:"systemTime"`
 	CheckoutFormContent string `json:"checkoutFormContent"`
 	Token               string `json:"token"`
-	TokenExpireTime     string `json:"tokenExpireTime"`
+	TokenExpireTime     int64  `json:"tokenExpireTime"`
 }
 
 type SubscriptionCheckoutFormResult struct {

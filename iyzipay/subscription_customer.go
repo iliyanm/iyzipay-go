@@ -5,7 +5,7 @@ type SubscriptionCustomer struct {
 	ConversationId  string               `json:"conversationId,omitempty"`
 	Name            string               `json:"name,omitempty"`
 	Surname         string               `json:"surname,omitempty"`
-	IdentityNumber  string               `json:"identitynumber,omitempty"`
+	IdentityNumber  string               `json:"identityNumber,omitempty"`
 	Email           string               `json:"email,omitempty"`
 	GSMNumber       string               `json:"gsmNumber,omitempty"`
 	BillingAddress  *SubscriptionAddress `json:"billingAddress,omitempty"`
