@@ -36,7 +36,7 @@ type SubscriptionCheckoutFormResult struct {
 }
 
 func (p *SubscriptionCheckoutFormResult) Get(options *Options) (*SubscriptionCheckoutFormResponse, error) {
-	response, err := connectV2("POST", options.baseUrl+"/v2/subscription/checkoutform/", options.apiKey, options.secretKey, p)
+	response, err := connectV2("GET", options.baseUrl+"/v2/subscription/checkoutform/"+p.Token, options.apiKey, options.secretKey, nil)
 	if err != nil {
 		return nil, err
 	}
