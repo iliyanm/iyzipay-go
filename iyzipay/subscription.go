@@ -79,8 +79,9 @@ func (p *SubscriptionUpgrade) Upgrade(options *Options) (*SubscriptionUpgradeRes
 }
 
 type SubscriptionUpgradeResponse struct {
-	Status     string `json:"status"` // success / failure
-	SystemTime int64  `json:"systemTime"`
+	Status     string                                `json:"status"` // success / failure
+	SystemTime int64                                 `json:"systemTime"`
+	Data       *SubscriptionCheckoutFormResponseData `json:"data"`
 }
 
 type SubscriptionCancel struct {
