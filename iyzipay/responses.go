@@ -38,4 +38,13 @@ type (
 		TokenExpireTime     int64  `json:"tokenExpireTime"`
 		PaymentPageUrl      string `json:"paymentPageUrl"`
 	}
+
+	RefundResponse struct {
+		Resource
+		PaymentId            string  `json:"paymentId"`
+		PaymentTransactionId string  `json:"paymentTransactionId"`
+		Price                float64 `json:"price"`
+		Currency             string  `json:"currency"`
+		ConnectorName        string  `json:"connectorName"`
+	}
 )
