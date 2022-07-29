@@ -133,7 +133,7 @@ func (p *SubscriptionUpdateCardInformation) UpdateCustomerCardInformation(option
 type SubscriptionUpdateCardInformationResponse struct {
 	Status              string `json:"status"` // success / failure
 	SystemTime          int64  `json:"systemTime"`
-	CheckoutFormContent int64  `json:"checkoutFormContent"`
-	Token               int64  `json:"token"`
 	TokenExpireTime     int64  `json:"tokenExpireTime"`
+	Token               string `json:"token"`
+	CheckoutFormContent string `json:"checkoutFormContent"`
 }
