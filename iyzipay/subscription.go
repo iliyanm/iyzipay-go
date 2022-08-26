@@ -24,6 +24,7 @@ func (p *Subscription) Create(options *Options) (*SubscriptionResponse, error) {
 }
 
 type SubscriptionResponse struct {
+	Errors
 	Status              string `json:"status"` // success / failure
 	SystemTime          int64  `json:"systemTime"`
 	CheckoutFormContent string `json:"checkoutFormContent"`
@@ -45,6 +46,7 @@ func (p *SubscriptionCheckoutFormResult) Get(options *Options) (*SubscriptionChe
 }
 
 type SubscriptionCheckoutFormResponse struct {
+	Errors
 	Status     string                                `json:"status"` // success / failure
 	SystemTime int64                                 `json:"systemTime"`
 	Data       *SubscriptionCheckoutFormResponseData `json:"data"`
@@ -79,6 +81,7 @@ func (p *SubscriptionUpgrade) Upgrade(options *Options) (*SubscriptionUpgradeRes
 }
 
 type SubscriptionUpgradeResponse struct {
+	Errors
 	Status     string                                `json:"status"` // success / failure
 	SystemTime int64                                 `json:"systemTime"`
 	Data       *SubscriptionCheckoutFormResponseData `json:"data"`
@@ -100,6 +103,7 @@ func (p *SubscriptionCancel) Cancel(options *Options) (*SubscriptionCancelRespon
 }
 
 type SubscriptionCancelResponse struct {
+	Errors
 	Status     string `json:"status"` // success / failure
 	SystemTime int64  `json:"systemTime"`
 }
@@ -131,9 +135,16 @@ func (p *SubscriptionUpdateCardInformation) UpdateCustomerCardInformation(option
 }
 
 type SubscriptionUpdateCardInformationResponse struct {
+	Errors
 	Status              string `json:"status"` // success / failure
 	SystemTime          int64  `json:"systemTime"`
 	TokenExpireTime     int64  `json:"tokenExpireTime"`
 	Token               string `json:"token"`
 	CheckoutFormContent string `json:"checkoutFormContent"`
+}
+
+type Errors struct {
+	ErrorCode    string `json:"errorCode"`
+	ErrorMessage string `json:"errorMessage"`
+	ErrorGroup   string `json:"errorGroup"`
 }
