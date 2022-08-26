@@ -33,6 +33,7 @@ func (p *PricingPlan) Create(options *Options) (*PricingPlanResponse, error) {
 }
 
 type PricingPlanResponse struct {
+	Errors
 	Status     string                   `json:"status"` // success / failure
 	SystemTime int64                    `json:"systemTime"`
 	Data       *PricingPlanResponseData `json:"data"`

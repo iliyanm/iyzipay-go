@@ -17,6 +17,7 @@ func (p *SubscriptionProduct) Create(options *Options) (*SubscriptionProductResp
 }
 
 type SubscriptionProductResponse struct {
+	Errors
 	Status     string                           `json:"status"` // success / failure
 	SystemTime int64                            `json:"systemTime"`
 	Data       *SubscriptionProductResponseData `json:"data"`
