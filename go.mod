@@ -1,4 +1,4 @@
-module github.com/coretrix/iyzipay-go
+module github.com/iliyanm/iyzipay-go
 
 go 1.17
 
